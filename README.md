@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-<a href="https://doi.org/10.5281/zenodo.21264921"><img src="https://zenodo.org/badge/254574189.svg" alt="DOI"></a>
+<a href="https://doi.org/10.5281/zenodo.21264922"><img src="https://zenodo.org/badge/254574189.svg" alt="DOI"></a>
 </p>
 
 Code and processed data for the differential-expression and gene-regulatory-network
