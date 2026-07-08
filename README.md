@@ -24,7 +24,7 @@ top to bottom. All figures and tables it produces are provided under
 > Howitt C., Nicklin E.F., Cohen K.E., Byrum S.R., Johanson Z. & Fraser G.J.
 > *Continuous tooth regeneration: RNAseq reveals genes for unlimited dental renewal in sharks.*
 >
-> This archived version of the code is citeable via Zenodo: <https://doi.org/10.5281/zenodo.21264921>
+> This archived version of the code is citeable via Zenodo: <https://doi.org/10.5281/zenodo.21264922>
 
 ---
 
