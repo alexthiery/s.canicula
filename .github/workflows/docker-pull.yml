@@ -1,0 +1,16 @@
+name: docker-pull
+
+# Docker Hub removes images belonging to free accounts after a period of
+# inactivity. Pull the image on a schedule so it is treated as active and is
+# not garbage-collected.
+on:
+  schedule:
+    - cron: '0 0 1 * *'   # 00:00 on the 1st of every month
+  workflow_dispatch:
+
+jobs:
+  docker-pull:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull image to keep it active on Docker Hub
+        run: docker pull alexthiery/scanicula-dea:latest

@@ -1,0 +1,13 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+ReferenceFiles
+output**
+.rstudio
+kitematic
+.cache
+paper
+.DS_Store
+.Rprofile
+renv/
