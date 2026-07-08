@@ -198,8 +198,6 @@ using the referenced inputs/outputs.
   | :---: | :---: |
   | ![](./suppl_files/RNEA_output/cytoscape/full_network.png) | ![](./suppl_files/RNEA_output/cytoscape/filtered_nosep_network.png) |
 
-- **Phylogenetic analysis** — the MYCN sequence alignment and tree were produced with external tools and are not part of this repository.
-
 ## License
 
 Released under the MIT License — see [`LICENSE`](./LICENSE).
