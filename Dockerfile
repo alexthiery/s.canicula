@@ -8,6 +8,12 @@ FROM bioconductor/bioconductor_docker:RELEASE_3_18
 
 LABEL org.opencontainers.image.description="Downstream RNA-seq analysis environment for the Scyliorhinus canicula dental lamina project (R 4.3 / Bioconductor 3.18)"
 
+# The analysis directory is mounted at run time and carries an renv project
+# (.Rprofile + renv/) from the host. Disable renv's autoloader so the container
+# uses the packages installed in the image library rather than trying to activate
+# the host's (wrong-platform, empty) project library.
+ENV RENV_CONFIG_AUTOLOADER_ENABLED=FALSE
+
 WORKDIR /project
 
 # Restore the pinned package set from renv.lock into the image's default library,
