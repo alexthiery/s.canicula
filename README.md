@@ -1,5 +1,7 @@
 # Scyliorhinus canicula dental regeneration RNA-seq
 
+[![DOI](https://zenodo.org/badge/254574189.svg)](https://doi.org/10.5281/zenodo.21264921)
+
 <p align="center">
 <img src="./suppl_files/header.png" width="100%">
 </p>
@@ -20,6 +22,7 @@ top to bottom. All figures and tables it produces are provided under
 > Howitt C., Nicklin E.F., Cohen K.E., Byrum S.R., Johanson Z. & Fraser G.J.
 > *Continuous tooth regeneration: RNAseq reveals genes for unlimited dental renewal in sharks.*
 >
+> This archived version of the code is citeable via Zenodo: <https://doi.org/10.5281/zenodo.21264921>
 
 ---
 
