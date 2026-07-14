@@ -300,7 +300,7 @@ curr_output_path <- paste0(output_path, 'functional_enrichment/')
 dir.create(curr_output_path)
 
 for(tissue in names(go_enrichment_summary)){
-  write.csv(go_enrichment_summary[[tissue]], file = paste0(curr_output_path, 'top_go_', tissue, '.csv'), quote = FALSE, row.names = FALSE)
+  write.csv(go_enrichment_summary[[tissue]], file = paste0(curr_output_path, 'top_go_', tissue, '.csv'), quote = TRUE, row.names = FALSE)
 }
 
 
