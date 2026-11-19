@@ -103,8 +103,8 @@ in the script.
 ### 1. Load and prepare data
 Counts are restricted to annotated genes, TRINITY IDs are replaced with gene names, and a
 DESeq2 object is built with the design `~ 0 + Group + Pool` (tissue, with the biological
-pool as a covariate). Genes with fewer than 5 counts in at least 2 samples are removed and
-the data are rlog-transformed for clustering.
+pool as a covariate). Genes with more than 5 counts in at least 3 samples are retained.
+The data are rlog-transformed for clustering.
 
 ### 2. QC plots
 Distribution of rlog values, sample–sample distances, and PCA. Samples cluster by tissue
@@ -119,8 +119,18 @@ the expression differences.
 A DESeq2 likelihood-ratio test (full `~ 0 + Group + Pool` vs reduced `~ 0 + Pool`)
 identifies genes that vary as a function of tissue (padj < 0.0001). These are clustered
 with self-organising maps (`kohonen`, 5×5 hexagonal grid) and visualised as per-tissue
-average violins; each cluster is assigned to its highest-expressing tissue.
-Per-cluster gene lists: [`cluster_gene_list.csv`](./suppl_files/dea_output/cluster_gene_list.csv).
+average violins. Each cluster is labelled with the tissue where its genes have the
+highest median scaled expression.
+
+- The [clustered gene list](./suppl_files/dea_output/cluster_gene_list.csv) gives the SOM cluster, assigned tissue and LRT statistics for all 3,275 significant genes.
+- The [full LRT results](./suppl_files/dea_output/LRT_results.csv) cover all 15,305 genes that passed the count filter, ordered by adjusted p-value.
+
+Both tables give the gene name, Trinity ID, mean normalised count across all 15 samples
+(`baseMean`), LRT statistic (`stat`, 4 degrees of freedom), raw p-value (`pvalue`) and
+Benjamini–Hochberg adjusted p-value (`padj`). A small `padj` supports a difference
+somewhere among the five tissues. The assigned tissue describes the cluster's expression
+pattern. A fold change would require a specific contrast between tissues.
+
 The per-replicate version of the SOM violins is
 [`SOM_DEgenes_violin.png`](./suppl_files/dea_output/SOM_DEgenes_violin.png).
 

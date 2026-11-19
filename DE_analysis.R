@@ -80,7 +80,7 @@ deseq$Pool <- droplevels(deseq$Pool)
 # normalise using median of ratios method
 deseq <- estimateSizeFactors(deseq)
 
-### Remove genes which do not have 5 readcounts in at least 2 samples
+# Keep genes with more than 5 counts in at least 3 samples.
 deseq <- deseq[rowSums(counts(deseq) > 5) > 2]
 
 # rlog transform the data. The regularised log stops the most highly expressed
@@ -134,20 +134,20 @@ graphics.off()
 # This is to identify genes which vary across the tissues, which will then be clustered by SOM
 deseq <- DESeq(deseq, test = 'LRT', reduced = ~ 0 + Pool, fitType = 'local')
 
-res_LRT <- results(deseq)
+# The LRT tests tissue as a whole. DESeq2's single-coefficient fold change
+# does not describe this five-tissue comparison.
+res_LRT <- as.data.frame(results(deseq)) %>%
+  rownames_to_column("Gene") %>%
+  dplyr::select(Gene, baseMean, stat, pvalue, padj) %>%
+  left_join(dplyr::select(annotations, gene.name, trinity_id), by = c("Gene" = "gene.name")) %>%
+  relocate(trinity_id, .after = Gene) %>%
+  arrange(padj, pvalue)
+write.csv(res_LRT, file.path(output_path, "LRT_results.csv"), row.names = FALSE)
 
-# Although fold changes present they are not directly associated with the actual hypothesis test therefore genes are filtered by padj (FDR) < 0.0001 not FC
-sig_res_LRT <- res_LRT %>%
-  data.frame() %>%
-  rownames_to_column(var="gene") %>% 
-  as_tibble() %>% 
-  dplyr::filter(padj < 0.0001)
-
-# 3275 genes vary significantly as a function of tissue
-length(sig_res_LRT$gene)
+sig_res_LRT <- dplyr::filter(res_LRT, padj < 0.0001)
 
 # get counts for DE genes
-DE.counts <- assay(rld)[rownames(rld) %in% sig_res_LRT$gene,]
+DE.counts <- assay(rld)[rownames(rld) %in% sig_res_LRT$Gene,]
 
 # Plot heatmap of differentially expressed genes
 png(paste0(output_path, "DE_LRT_HM.png"), height = 30, width = 20, units = "cm", res = 200)
@@ -204,8 +204,12 @@ ggplot(group_melt, aes(x = Var2, y = value)) +
 graphics.off()
 
 
-# save list of genes in each cluster
-cluster_gene_list <- group_melt %>% dplyr::select(c(Var1, cluster, colour)) %>% unique() %>% arrange(cluster) %>% dplyr::rename(Gene = Var1, Cluster = cluster, `Assigned Tissue` = colour)
+# Save the LRT statistics alongside each gene's SOM assignment.
+cluster_gene_list <- group_melt %>%
+  distinct(Var1, cluster, colour) %>%
+  arrange(cluster) %>%
+  dplyr::rename(Gene = Var1, Cluster = cluster, `Assigned Tissue` = colour) %>%
+  left_join(sig_res_LRT, by = "Gene")
 write.csv(cluster_gene_list, file = paste0(output_path, 'cluster_gene_list.csv'), quote = FALSE, row.names = F)
 
 ######## Plot SOM for average tissue expression
