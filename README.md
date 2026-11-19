@@ -120,7 +120,19 @@ A DESeq2 likelihood-ratio test (full `~ 0 + Group + Pool` vs reduced `~ 0 + Pool
 identifies genes that vary as a function of tissue (padj < 0.0001). These are clustered
 with self-organising maps (`kohonen`, 5×5 hexagonal grid) and visualised as per-tissue
 average violins; each cluster is assigned to its highest-expressing tissue.
-Per-cluster gene lists: [`cluster_gene_list.csv`](./suppl_files/dea_output/cluster_gene_list.csv).
+
+- [Clustered genes with LRT statistics](./suppl_files/dea_output/cluster_gene_list.csv) — the 3,275 significant genes with their SOM cluster and assigned tissue.
+- [Full LRT results](./suppl_files/dea_output/LRT_results.csv) — all 15,305 tested genes, ordered by adjusted p-value.
+
+For each gene, `baseMean` is the mean normalised count across all 15 samples. The LRT statistic
+(`stat`) is the reduction in deviance when tissue is added to the pool-only model. `pvalue` is
+the raw p-value for that test (χ²), and `padj` is the
+Benjamini–Hochberg adjusted p-value across genes.
+
+A small `padj` supports an expression difference somewhere among the five tissues. The tables
+omit `log2FoldChange` because a signed fold change requires a specific contrast, such as SL
+versus ET. `Assigned Tissue` describes the expression pattern of the gene's SOM cluster.
+
 The per-replicate version of the SOM violins is
 [`SOM_DEgenes_violin.png`](./suppl_files/dea_output/SOM_DEgenes_violin.png).
 
