@@ -136,6 +136,13 @@ deseq <- DESeq(deseq, test = 'LRT', reduced = ~ 0 + Pool, fitType = 'local')
 
 res_LRT <- results(deseq)
 
+lrt_stats <- as.data.frame(res_LRT) %>%
+  rownames_to_column("Gene") %>%
+  mutate(trinity_id = annotations$trinity_id[match(Gene, annotations$gene.name)]) %>%
+  dplyr::select(Gene, trinity_id, baseMean, stat, pvalue, padj) %>%
+  arrange(padj, pvalue)
+write.csv(lrt_stats, file.path(output_path, "LRT_results.csv"), row.names = FALSE)
+
 # Although fold changes present they are not directly associated with the actual hypothesis test therefore genes are filtered by padj (FDR) < 0.0001 not FC
 sig_res_LRT <- res_LRT %>%
   data.frame() %>%
@@ -206,6 +213,7 @@ graphics.off()
 
 # save list of genes in each cluster
 cluster_gene_list <- group_melt %>% dplyr::select(c(Var1, cluster, colour)) %>% unique() %>% arrange(cluster) %>% dplyr::rename(Gene = Var1, Cluster = cluster, `Assigned Tissue` = colour)
+cluster_gene_list <- left_join(cluster_gene_list, lrt_stats, by = "Gene")
 write.csv(cluster_gene_list, file = paste0(output_path, 'cluster_gene_list.csv'), quote = FALSE, row.names = F)
 
 ######## Plot SOM for average tissue expression
